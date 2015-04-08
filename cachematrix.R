@@ -1,8 +1,8 @@
-## Put comments here that give an overall description of what your
-## functions do
+## There are only two function. first you may initalize a matrix with makeCacheMatrix function. It stores the matrix data and inverse of the data
+## when you call cacheSolve function It checks the object which have already created with makeCacheMatrix, if it includes inverse data it returns that value 
+## if the inverse data is NULL it computes its value.
 
-## Write a short comment describing this function
-
+#initilizes CacheMatrix instance
 makeCacheMatrix <- function(x = matrix()) {
  I <- NULL
  set <- function(y){
@@ -16,18 +16,36 @@ makeCacheMatrix <- function(x = matrix()) {
 }
 
 
-## Write a short comment describing this function
-
+## tries to compute inverse of matrices created with makeCacheMatrix function. 
+## if the instance has inverse value then returns it else it computes and sets it with setInverse
 cacheSolve <- function(x, ...) {
- ## Return a matrix that is the inverse of 'x'
  I <- x$getInverse()
  if(!is.null(I)){
-  message("getting cached data")
+  message("GET FROM CACHE!")
   return(I)
  }
- message("newly calculating data")
+ message("CALCULATED")
  data <- x$get()
  I <- solve(data, ...)
  x$setInverse(I)
  I
 }
+
+##TEST##
+##initialize object
+M <- makeCacheMatrix();
+## create a matrix 
+test <- matrix(1:4, 2, 2);
+## set the matrix
+M$set(test);
+## solve it
+cacheSolve(M);
+## get solution
+M$getInverse();
+## solve againt (it returns from cache!)
+cacheSolve(M);
+## set as NULL
+M$setInverse(NULL);
+## solve it again (computes again) 
+cacheSolve(M);
+
